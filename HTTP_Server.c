@@ -9,11 +9,42 @@
 
 void *connection_handler(void *socket_desc) {
     int sock = *(int*)socket_desc;
+    char buffer[1024];
+
+    char method[16];
+    char URL[1024];
+    char protocol[16];
+    
     char *hello = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 12\n\nHello, world!";
-    write(sock, hello, strlen(hello));
+    
+    char temp_string[strlen(hello)];
+    char s2[]="\n\n";
+
+    for (int i = 0; i < strlen(hello) ;i++){
+        temp_string[i]=hello[i];
+    }
+    read(sock,buffer,1024);
+    printf("HTTP receieved: %s\n",buffer);
+    sscanf(buffer,"%s %s %s",method,URL,protocol);
+    printf("Method: %s\n",method);
+    printf("URL: %s\n",URL);
+    printf("Protocol: %s\n",protocol);
+    char *message;
+    
+    char* p = strstr(temp_string,s2);
+    if (p){
+        strcpy(p,"");
+    }
+
+    asprintf(&message,"%s\nMethod: %s\nURL: %s\nProtocol: %s\n\n%s",temp_string,method,URL,protocol,hello+strlen(temp_string));
+
+    printf("message: %s\n",message);
+    
+    write(sock, message, strlen(message));
     printf("Response sent\n");
     close(sock);
     free(socket_desc);
+    free(message);
     return NULL;
 }
 

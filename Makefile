@@ -16,12 +16,12 @@ all: $(TARGET)
 
 
 $(TARGET):$(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) HTTP_Client.o -o HTTP_Client
-	$(CC) $(OBJS) $(CFLAGS) HTTP_Server.o -o HTTP_Server
+	$(CC)  $(CFLAGS) HTTP_Client.o -o HTTP_Client
+	$(CC)  $(CFLAGS) HTTP_Server.o -o HTTP_Server
 
 $(OBJS): $(SRCS)
 	$(CC) $(CFLAGS) -c HTTP_Client.c 
-	$(CC) $(CFLAGS) -oc HTTP_Server.c 
+	$(CC) $(CFLAGS) -c HTTP_Server.c 
 
 
 clean: $(TARGET)
